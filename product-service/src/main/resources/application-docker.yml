@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:postgresql://postgres-product:5432/product_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  jackson:
+    serialization:
+      indent-output: true
+

@@ -1,0 +1,41 @@
+# Build artifacts
+**/build/
+**/target/
+**/.gradle/
+**/bin/
+
+# IDE
+**/.idea/
+**/.vscode/
+**/*.iml
+**/*.ipr
+**/*.iws
+
+# OS
+**/.DS_Store
+**/Thumbs.db
+
+# Git
+**/.git/
+**/.gitignore
+
+# Logs
+**/*.log
+
+# Tests
+**/test-results/
+**/reports/
+
+# Node modules (for webapp)
+**/node_modules/
+**/dist/
+
+# Documentation
+**/*.md
+!README.md
+
+# Docker
+**/Dockerfile
+**/.dockerignore
+**/docker-compose.yml
+
