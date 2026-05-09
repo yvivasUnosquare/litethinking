@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: http://product-service:8081
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: productServiceCB
+                fallbackUri: forward:/api/fallback/products
+        - id: order-service
+          uri: http://order-service:8082
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: orderServiceCB
+                fallbackUri: forward:/api/fallback/orders
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 3
+        slowCallDurationThreshold: 2000
+    instances:
+      productServiceCB:
+        baseConfig: default
+      orderServiceCB:
+        baseConfig: default
+
+logging:
+  level:
+    org.springframework: INFO
+    org.example.gateway: DEBUG
+

@@ -64,6 +64,13 @@ services:
         condition: service_healthy
     networks:
       - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8081/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
 
   # Order Service
   order-service:
@@ -83,9 +90,16 @@ services:
       postgres-order:
         condition: service_healthy
       product-service:
-        condition: service_started
+        condition: service_healthy
     networks:
       - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8082/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
 
   # API Gateway
   api-gateway:
@@ -94,16 +108,39 @@ services:
       dockerfile: api-gateway/Dockerfile
     container_name: api-gateway
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       PRODUCT_SERVICE_URL: http://product-service:8081
       ORDER_SERVICE_URL: http://order-service:8082
     ports:
       - "8080:8080"
     depends_on:
-      - product-service
-      - order-service
+      product-service:
+        condition: service_healthy
+      order-service:
+        condition: service_healthy
     networks:
       - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
 
+  # Web Application (React Frontend)
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    container_name: webapp
+    ports:
+      - "3000:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
 
 volumes:
   postgres-product-data:
