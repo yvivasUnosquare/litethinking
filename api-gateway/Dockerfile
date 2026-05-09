@@ -23,6 +23,9 @@ RUN chmod +x gradlew && ./gradlew :api-gateway:bootJar -x test
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
 
+# Install wget for healthcheck
+RUN apk add --no-cache wget
+
 WORKDIR /app
 
 # Copy the built jar from builder stage
