@@ -1,3 +1,7 @@
+# Evidencia
+Folder evidencia en el repo con los pantallazos de la base de datos, aplicacion y el frontend cortesia de claude.
+
+
 # E-Commerce Platform
 
 Una plataforma de e-commerce completa construida con microservicios usando Spring Boot, Spring Cloud, React y Docker.
@@ -304,15 +308,6 @@ product-service.url: http://product-service:8081/product-service
 
 - **Contenedorización**: Docker, Docker Compose
 
-## 🔐 Consideraciones de Seguridad
-
-- La plataforma actual es un MVP sin autenticación
-- Para producción, añadir:
-  - Spring Security + JWT
-  - HTTPS/TLS
-  - Rate limiting
-  - Input validation más estricta
-  - CORS configuration
 
 ## 📝 Datos de Ejemplo
 
@@ -343,13 +338,7 @@ Para probar, se pueden crear productos directamente via Swagger:
 - Asegurar que los puertos 5432 y 5433 no estén en uso
 - Limpiar volúmenes: `docker-compose down -v`
 
-## 📈 Escalabilidad Futura
 
-- Agregar Redis para caché
-- Implementar mensaje queue (Kafka/RabbitMQ)
-- Agregar Eureka para service discovery
-- Implementar logging centralizado (ELK Stack)
-- Agregar monitoreo (Prometheus/Grafana)
 
 ## 📄 Licencia
 
